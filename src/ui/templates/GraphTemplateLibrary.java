@@ -93,6 +93,27 @@ public final class GraphTemplateLibrary {
         items.add(hypercubeQ3("Hypercube Q3"));
         items.add(hypercubeQ4Projection("Hypercube Q4 Projection"));
 
+        // One showcase template per registered algorithm for quick demos.
+        items.add(bfsShowcase());
+        items.add(dfsShowcase());
+        items.add(dijkstraShowcase());
+        items.add(bellmanFordShowcase());
+        items.add(dagShortestPathShowcase());
+        items.add(topologicalOrderShowcase());
+        items.add(matrixMultiplicationApspShowcase());
+        items.add(recursiveDoublingApspShowcase());
+        items.add(floydWarshallShowcase());
+        items.add(johnsonShowcase());
+        items.add(repeatedDijkstraApspShowcase());
+        items.add(primShowcase());
+        items.add(kruskalShowcase());
+        items.add(fordFulkersonShowcase());
+        items.add(edmondsKarpShowcase());
+        items.add(dinicShowcase());
+        items.add(transitiveClosureShowcase());
+        items.add(aStarShowcase());
+        items.add(seidelShowcase());
+
         return List.copyOf(items);
     }
 
@@ -432,6 +453,235 @@ public final class GraphTemplateLibrary {
             }
         }
         return new GraphTemplate(name, GraphTemplateType.SPECIAL, pos, edges);
+    }
+
+    private static GraphTemplate bfsShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.1, 0.5),
+                1, new Point2D.Double(0.3, 0.25),
+                2, new Point2D.Double(0.3, 0.75),
+                3, new Point2D.Double(0.5, 0.18),
+                4, new Point2D.Double(0.5, 0.42),
+                5, new Point2D.Double(0.5, 0.65),
+                6, new Point2D.Double(0.72, 0.3),
+                7, new Point2D.Double(0.72, 0.7)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1), e(0, 2), e(1, 3), e(1, 4), e(2, 5), e(4, 6), e(5, 7)
+        );
+        return new GraphTemplate("Algorithm Demo - BFS", GraphTemplateType.BASICS, pos, edges);
+    }
+
+    private static GraphTemplate dfsShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.1, 0.5),
+                1, new Point2D.Double(0.25, 0.2),
+                2, new Point2D.Double(0.4, 0.2),
+                3, new Point2D.Double(0.55, 0.2),
+                4, new Point2D.Double(0.7, 0.2),
+                5, new Point2D.Double(0.25, 0.75),
+                6, new Point2D.Double(0.45, 0.75),
+                7, new Point2D.Double(0.65, 0.75)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1), e(1, 2), e(2, 3), e(3, 4), e(0, 5), e(5, 6), e(6, 7), e(2, 6)
+        );
+        return new GraphTemplate("Algorithm Demo - DFS", GraphTemplateType.BASICS, pos, edges);
+    }
+
+    private static GraphTemplate dijkstraShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.1, 0.5),
+                1, new Point2D.Double(0.32, 0.25),
+                2, new Point2D.Double(0.32, 0.75),
+                3, new Point2D.Double(0.55, 0.45),
+                4, new Point2D.Double(0.82, 0.5)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1, 4), e(0, 2, 1), e(2, 1, 2), e(1, 3, 1), e(2, 3, 5), e(3, 4, 3), e(1, 4, 7)
+        );
+        return new GraphTemplate("Algorithm Demo - Dijkstra", GraphTemplateType.WEIGHTED, pos, edges);
+    }
+
+    private static GraphTemplate bellmanFordShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.1, 0.5),
+                1, new Point2D.Double(0.3, 0.25),
+                2, new Point2D.Double(0.3, 0.75),
+                3, new Point2D.Double(0.58, 0.4),
+                4, new Point2D.Double(0.84, 0.5)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1, 4), e(0, 2, 5), e(1, 2, -2), e(1, 3, 6), e(2, 3, 3), e(2, 4, 4), e(3, 4, 2)
+        );
+        return new GraphTemplate("Algorithm Demo - Bellman-Ford", GraphTemplateType.WEIGHTED, pos, edges);
+    }
+
+    private static GraphTemplate dagShortestPathShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.1, 0.5),
+                1, new Point2D.Double(0.3, 0.3),
+                2, new Point2D.Double(0.3, 0.75),
+                3, new Point2D.Double(0.58, 0.35),
+                4, new Point2D.Double(0.58, 0.72),
+                5, new Point2D.Double(0.85, 0.5)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1, 2), e(0, 2, 6), e(1, 2, -4), e(1, 3, 3), e(2, 3, 2), e(2, 4, 5), e(3, 5, 2), e(4, 5, 1)
+        );
+        return new GraphTemplate("Algorithm Demo - DAG Shortest Path", GraphTemplateType.DAGS, pos, edges);
+    }
+
+    private static GraphTemplate topologicalOrderShowcase() {
+        return new GraphTemplate(
+                "Algorithm Demo - Topological Order",
+                GraphTemplateType.DAGS,
+                dagDiamond("tmp").getPositions(),
+                dagDiamond("tmp").getEdges()
+        );
+    }
+
+    private static GraphTemplate matrixMultiplicationApspShowcase() {
+        return new GraphTemplate(
+                "Algorithm Demo - APSP (Matrix Multiplication)",
+                GraphTemplateType.WEIGHTED,
+                weightedWheel("tmp", 7).getPositions(),
+                weightedWheel("tmp", 7).getEdges()
+        );
+    }
+
+    private static GraphTemplate recursiveDoublingApspShowcase() {
+        return new GraphTemplate(
+                "Algorithm Demo - APSP (Recursive Doubling)",
+                GraphTemplateType.WEIGHTED,
+                weightedMesh("tmp", 3, 3).getPositions(),
+                weightedMesh("tmp", 3, 3).getEdges()
+        );
+    }
+
+    private static GraphTemplate floydWarshallShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.12, 0.5),
+                1, new Point2D.Double(0.32, 0.22),
+                2, new Point2D.Double(0.32, 0.78),
+                3, new Point2D.Double(0.58, 0.3),
+                4, new Point2D.Double(0.58, 0.72),
+                5, new Point2D.Double(0.86, 0.5)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1, 3), e(0, 2, 8), e(1, 3, 2), e(2, 4, 1), e(3, 2, -2), e(3, 5, 4), e(4, 5, 2), e(1, 4, 7)
+        );
+        return new GraphTemplate("Algorithm Demo - Floyd-Warshall", GraphTemplateType.WEIGHTED, pos, edges);
+    }
+
+    private static GraphTemplate johnsonShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.12, 0.5),
+                1, new Point2D.Double(0.34, 0.24),
+                2, new Point2D.Double(0.34, 0.76),
+                3, new Point2D.Double(0.6, 0.22),
+                4, new Point2D.Double(0.6, 0.76),
+                5, new Point2D.Double(0.86, 0.5)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1, 2), e(0, 2, 5), e(1, 3, 2), e(2, 1, -3), e(2, 4, 3), e(3, 4, -1), e(4, 5, 2), e(1, 5, 9)
+        );
+        return new GraphTemplate("Algorithm Demo - Johnson (Negative Weights)", GraphTemplateType.WEIGHTED, pos, edges);
+    }
+
+    private static GraphTemplate repeatedDijkstraApspShowcase() {
+        return new GraphTemplate(
+                "Algorithm Demo - APSP (Repeated Dijkstra)",
+                GraphTemplateType.WEIGHTED,
+                weightedSparse("tmp", 10).getPositions(),
+                weightedSparse("tmp", 10).getEdges()
+        );
+    }
+
+    private static GraphTemplate primShowcase() {
+        return new GraphTemplate(
+                "Algorithm Demo - Prim MST",
+                GraphTemplateType.TREES,
+                mstShowcaseBase().getPositions(),
+                mstShowcaseBase().getEdges()
+        );
+    }
+
+    private static GraphTemplate kruskalShowcase() {
+        return new GraphTemplate(
+                "Algorithm Demo - Kruskal MST",
+                GraphTemplateType.TREES,
+                mstShowcaseBase().getPositions(),
+                mstShowcaseBase().getEdges()
+        );
+    }
+
+    private static GraphTemplate mstShowcaseBase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.1, 0.55),
+                1, new Point2D.Double(0.28, 0.25),
+                2, new Point2D.Double(0.28, 0.8),
+                3, new Point2D.Double(0.5, 0.22),
+                4, new Point2D.Double(0.5, 0.78),
+                5, new Point2D.Double(0.74, 0.5),
+                6, new Point2D.Double(0.88, 0.3)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1, 4), e(0, 2, 3), e(1, 2, 5), e(1, 3, 6), e(2, 4, 7), e(3, 4, 2), e(3, 5, 4), e(4, 5, 1), e(5, 6, 3), e(3, 6, 8)
+        );
+        return new GraphTemplate("tmp", GraphTemplateType.TREES, pos, edges);
+    }
+
+    private static GraphTemplate fordFulkersonShowcase() {
+        return withType(flowNetwork("Algorithm Demo - Ford-Fulkerson (s=0,t=6)"), GraphTemplateType.FLOW);
+    }
+
+    private static GraphTemplate edmondsKarpShowcase() {
+        return withType(flowNetwork("Algorithm Demo - Edmonds-Karp (s=0,t=6)"), GraphTemplateType.FLOW);
+    }
+
+    private static GraphTemplate dinicShowcase() {
+        return withType(flowNetwork("Algorithm Demo - Dinic (s=0,t=6)"), GraphTemplateType.FLOW);
+    }
+
+    private static GraphTemplate transitiveClosureShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.15, 0.35),
+                1, new Point2D.Double(0.35, 0.2),
+                2, new Point2D.Double(0.35, 0.52),
+                3, new Point2D.Double(0.35, 0.82),
+                4, new Point2D.Double(0.62, 0.35),
+                5, new Point2D.Double(0.85, 0.52)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1), e(1, 2), e(2, 4), e(0, 3), e(3, 4), e(4, 5), e(2, 5)
+        );
+        return new GraphTemplate("Algorithm Demo - Transitive Closure", GraphTemplateType.DAGS, pos, edges);
+    }
+
+    private static GraphTemplate aStarShowcase() {
+        Map<Integer, Point2D.Double> pos = Map.of(
+                0, new Point2D.Double(0.1, 0.5),
+                1, new Point2D.Double(0.25, 0.28),
+                2, new Point2D.Double(0.25, 0.72),
+                3, new Point2D.Double(0.48, 0.28),
+                4, new Point2D.Double(0.48, 0.72),
+                5, new Point2D.Double(0.7, 0.5),
+                6, new Point2D.Double(0.9, 0.5)
+        );
+        List<GraphTemplate.TemplateEdge> edges = List.of(
+                e(0, 1, 2), e(0, 2, 2), e(1, 3, 2), e(2, 4, 2), e(3, 5, 2), e(4, 5, 2), e(1, 4, 6), e(2, 3, 6), e(5, 6, 1)
+        );
+        return new GraphTemplate("Algorithm Demo - A*", GraphTemplateType.WEIGHTED, pos, edges);
+    }
+
+    private static GraphTemplate seidelShowcase() {
+        return new GraphTemplate(
+                "Algorithm Demo - Seidel",
+                GraphTemplateType.SPECIAL,
+                cycle("tmp", 8).getPositions(),
+                cycle("tmp", 8).getEdges()
+        );
     }
 
     /** Utility for generating circular coordinates used by several templates. */

@@ -22,6 +22,7 @@ import ui.dialogs.ResidualGraphDialog;
 import ui.dialogs.SelectionExtrasDialog;
 import ui.dialogs.ShortcutsDialog;
 import ui.dialogs.TopologicalOrderDialog;
+import ui.extras.ChangeVertexNameActionHandler;
 import ui.extras.ComplementGraphActionHandler;
 import ui.extras.EdgeColoringActionHandler;
 import ui.extras.FindRootGraphActionHandler;
@@ -117,6 +118,7 @@ public class GraphEditorFrame extends JFrame {
     private List<Edge> activeTopologicalEdges;
     private final VertexColoringActionHandler vertexColoringActionHandler;
     private final EdgeColoringActionHandler edgeColoringActionHandler;
+    private final ChangeVertexNameActionHandler changeVertexNameActionHandler;
     private final ComplementGraphActionHandler complementGraphActionHandler;
     private final LineGraphActionHandler lineGraphActionHandler;
     private final FindRootGraphActionHandler findRootGraphActionHandler;
@@ -151,6 +153,7 @@ public class GraphEditorFrame extends JFrame {
         levelGraphDialog = new LevelGraphDialog(this);
         vertexColoringActionHandler = new VertexColoringActionHandler(this, controller);
         edgeColoringActionHandler = new EdgeColoringActionHandler(this, controller);
+        changeVertexNameActionHandler = new ChangeVertexNameActionHandler(this, controller);
         complementGraphActionHandler = new ComplementGraphActionHandler(this, controller);
         lineGraphActionHandler = new LineGraphActionHandler(this, controller);
         findRootGraphActionHandler = new FindRootGraphActionHandler(this, controller);
@@ -296,6 +299,7 @@ public class GraphEditorFrame extends JFrame {
                 this::toggleUndirectedCreationMode,
                 this::promptColorSelectedVertices,
                 this::promptColorSelectedEdge,
+                this::promptRenameSelectedVertices,
                 this::promptForSelectedEdgeWeight,
                 this::applyCircleLayout,
                 this::openExtrasDialog
@@ -820,6 +824,7 @@ public class GraphEditorFrame extends JFrame {
         bindings.onChooseDefaultEdgeColor = this::promptChooseDefaultEdgeColor;
         bindings.onColorVertices = this::promptColorSelectedVertices;
         bindings.onColorEdge = this::promptColorSelectedEdge;
+        bindings.onRenameSelectedVertices = this::promptRenameSelectedVertices;
         bindings.onUndo = controller::undo;
         bindings.onCopySelection = () -> {
             if (!controller.copySelectionToClipboard()) {
@@ -937,6 +942,11 @@ public class GraphEditorFrame extends JFrame {
         if (color != null) {
             controller.setSelectedEdgeColor(color.getRGB());
         }
+    }
+
+    /** Prompts and applies a name change to all selected vertices. */
+    private void promptRenameSelectedVertices() {
+        changeVertexNameActionHandler.run();
     }
 
     /** Opens a reusable chooser so recent colors remain available across all color actions. */

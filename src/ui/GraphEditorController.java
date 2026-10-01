@@ -668,6 +668,45 @@ public class GraphEditorController {
     }
 
     /**
+     * Renames the currently selected vertices.
+     *
+     * <p>When {@code append} is false, every selected vertex receives the provided text exactly.
+     * When {@code append} is true, the provided text is appended to each vertex's current name.
+     * Empty append text is treated as a no-op.
+     *
+     * @param text text to apply to the selected vertices; null is treated as empty
+     * @param append whether to append the text instead of replacing names
+     * @return true when at least one vertex name changed
+     */
+    public boolean renameSelectedVertices(String text, boolean append) {
+        List<Vertex> vertices = getSelectedScopeVertices();
+        if (vertices.isEmpty()) {
+            return false;
+        }
+
+        String value = text == null ? "" : text;
+        if (append && value.isEmpty()) {
+            return false;
+        }
+
+        boolean updated = false;
+        for (Vertex vertex : vertices) {
+            String currentName = vertex.getName();
+            String newName = append ? currentName + value : value;
+            if (!Objects.equals(currentName, newName)) {
+                vertex.setName(newName);
+                updated = true;
+            }
+        }
+
+        if (updated) {
+            notifyChanged();
+            notifyModified();
+        }
+        return updated;
+    }
+
+    /**
      * Applies colors to vertices by id and notifies listeners once.
      *
      * @param colorsByVertexId map vertex-id -> RGB color

@@ -40,6 +40,7 @@ final class GraphEditorSidePanelBuilder {
     private final Runnable onToggleUndirectedCreation;
     private final Runnable onColorVertices;
     private final Runnable onColorSelectedEdge;
+    private final Runnable onRenameSelectedVertices;
     private final Runnable onPromptSelectedEdgeWeight;
     private final Runnable onQuickLayout;
     private final Runnable onOpenExtras;
@@ -56,6 +57,7 @@ final class GraphEditorSidePanelBuilder {
             Runnable onToggleUndirectedCreation,
             Runnable onColorVertices,
             Runnable onColorSelectedEdge,
+            Runnable onRenameSelectedVertices,
             Runnable onPromptSelectedEdgeWeight,
             Runnable onQuickLayout,
             Runnable onOpenExtras
@@ -71,6 +73,7 @@ final class GraphEditorSidePanelBuilder {
         this.onToggleUndirectedCreation = onToggleUndirectedCreation;
         this.onColorVertices = onColorVertices;
         this.onColorSelectedEdge = onColorSelectedEdge;
+        this.onRenameSelectedVertices = onRenameSelectedVertices;
         this.onPromptSelectedEdgeWeight = onPromptSelectedEdgeWeight;
         this.onQuickLayout = onQuickLayout;
         this.onOpenExtras = onOpenExtras;
@@ -147,6 +150,11 @@ final class GraphEditorSidePanelBuilder {
             onColorSelectedEdge.run();
         });
 
+        JButton renameVertices = new JButton();
+        decorator.decorate(renameVertices, "Change Vertex Name", "Ctrl+N");
+        renameVertices.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        renameVertices.addActionListener(e -> onRenameSelectedVertices.run());
+
         JButton setEdgeWeight = new JButton();
         decorator.decorate(setEdgeWeight, "Set Selected Edge Weight", "W");
         setEdgeWeight.setAlignmentX(JPanel.LEFT_ALIGNMENT);
@@ -164,6 +172,8 @@ final class GraphEditorSidePanelBuilder {
         panel.add(colorVertices);
         panel.add(Box.createVerticalStrut(6));
         panel.add(colorEdge);
+        panel.add(Box.createVerticalStrut(6));
+        panel.add(renameVertices);
         panel.add(Box.createVerticalStrut(6));
         panel.add(setEdgeWeight);
         panel.add(Box.createVerticalStrut(6));

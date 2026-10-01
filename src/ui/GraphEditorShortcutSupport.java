@@ -42,6 +42,7 @@ final class GraphEditorShortcutSupport {
         Runnable onChooseDefaultEdgeColor;
         Runnable onColorVertices;
         Runnable onColorEdge;
+        Runnable onRenameSelectedVertices;
         Runnable onUndo;
         Runnable onCopySelection;
         Runnable onPasteSelection;
@@ -70,6 +71,7 @@ final class GraphEditorShortcutSupport {
         inputMap.put(KeyStroke.getKeyStroke("control E"), "default-edge-color");
         inputMap.put(KeyStroke.getKeyStroke("control shift V"), "color-vertices");
         inputMap.put(KeyStroke.getKeyStroke("control shift E"), "color-edge");
+        inputMap.put(KeyStroke.getKeyStroke("control N"), "rename-selected-vertices");
         inputMap.put(KeyStroke.getKeyStroke("control shift O"), "open-extras");
         inputMap.put(KeyStroke.getKeyStroke("control shift BACK_SPACE"), "clear-graph");
         inputMap.put(KeyStroke.getKeyStroke("control G"), "premade-graphs");
@@ -177,6 +179,12 @@ final class GraphEditorShortcutSupport {
                 bindings.onColorEdge.run();
             }
         });
+        actionMap.put("rename-selected-vertices", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bindings.onRenameSelectedVertices.run();
+            }
+        });
         actionMap.put("edge-weight-dialog", new javax.swing.AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -254,6 +262,7 @@ final class GraphEditorShortcutSupport {
                 "  Ctrl+E                  Default edge color",
                 "  Ctrl+Shift+V            Color selected vertices",
                 "  Ctrl+Shift+E            Color selected edge",
+                "  Ctrl+N                  Change vertex name",
                 "  Ctrl+Shift+O            Open Extras actions",
                 "  W                       Set selected edge weight",
                 "",
